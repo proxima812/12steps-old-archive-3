@@ -1,0 +1,18 @@
+---
+export interface Props {
+ columns: string;
+}
+
+const { columns } = Astro.props;
+let col;
+columns === "3" || "2" ? col === "2" || "1" : null;
+---
+
+<div
+ title="Сетка"
+ class={"grid gap-5 " + "md:grid-cols-" + columns + " grid-cols-" + col + " grid"}
+ role="row"
+ aria-label="Сетка для изображений и блоков"
+>
+ <slot />
+</div>

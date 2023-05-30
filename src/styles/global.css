@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+ :root {
+  --default-color: #040212;
+  --body-size-font: 16px;
+  --body-size-weight: 400;
+  --body-bg: #f6f6f6;
+  --main-font: "IBM Plex Sans";
+ }
+
+ img {
+  vertical-align: top;
+  content-visibility: auto;
+ }
+
+ p {
+  hyphens: auto;
+ }
+
+ html,
+ body {
+  min-width: 320px;
+  font-family: var(--main-font), sans-serif;
+  color: var(--default-color);
+  font-size: var(--body-size-font);
+  font-weight: var(--body-size-weight);
+  background-color: var(--body-bg);
+  scroll-behavior: smooth;
+ }
+
+ .main-container {
+  @apply px-[20px] mx-auto max-w-[1020px];
+ }
+ .box {
+  background: #fcfcfc;
+  box-shadow: 2px 2px 20px rgba(198, 198, 198, 0.2);
+  border: 2px solid;
+  border-image-source: linear-gradient(106.3deg, #ededed 1.04%, #f4f4f4 98.66%);
+ }
+ .hover-top {
+  transition: transform 0.2s linear;
+ }
+ .hover-top:hover {
+  transition: transform 0.2s linear;
+  transform: translateY(-3px);
+ }
+ .hover-right {
+  transition: transform 0.2s linear;
+ }
+ .hover-right:hover {
+  transition: transform 0.2s linear;
+  transform: translateX(3px);
+ }
+}

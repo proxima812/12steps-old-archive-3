@@ -1,0 +1,37 @@
+---
+import Article from "@components/Blog/Article.astro";
+import Pagination from "@components/Blog/Pagination.astro";
+import CTA from "@components/CTA.astro";
+import Breadcrumbs from "@components/main-components/Breadcrumbs.astro";
+import Layout from "@layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import { SITE } from "src/consts";
+
+export async function getStaticPaths({ paginate }) {
+ const allPosts = await getCollection("Blog").then((res) =>
+  res.filter((x) => x.data.draft !== false)
+ );
+ return paginate(allPosts, {
+  pageSize: 6,
+ });
+}
+
+const { page } = Astro.props;
+const site = SITE;
+const title = "Все возможные статьи" + " 🏔 " + site;
+---
+
+<Layout title={title} desc={"Все статьи всех категорий сайта"}>
+ <Breadcrumbs current={{ title: title, href: Astro.url.pathname }} class="mb-[30px]" />
+ <CTA />
+ <div class="grid gap-[30px] grid-cols-1 md:grid-cols-2">
+  {
+   page.data
+    .sort(
+     (a, b) => new Date(b.data.pubDate).valueOf() - new Date(a.data.pubDate).valueOf()
+    )
+    .map((item) => <Article data={item.data} slug={item.slug} />)
+  }
+ </div>
+ <Pagination prevUrl={page.url.prev} current={page.currentPage} nextUrl={page.url.next} />
+</Layout>

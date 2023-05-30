@@ -1,0 +1,13 @@
+---
+import Search from './Search';
+import Tags from './Tags.astro';
+import { getCollection } from "astro:content";
+const allPosts = await getCollection("Blog").then((res) =>
+	res.filter((x) => x.data.draft !== false),
+);
+---
+
+<div class="flex flex-col justify-center items-center gap-[20px] mb-[30px]">
+  <Search client:load searchList={allPosts}/>
+  <Tags />
+</div>

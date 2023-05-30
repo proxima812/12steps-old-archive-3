@@ -1,0 +1,28 @@
+---
+import { getCollection } from "astro:content";
+import Article from "./Blog/Article.astro";
+const allPosts = await getCollection("Blog").then((res) =>
+	res.filter((x) => x.data.draft !== false),
+);
+---
+
+<div class="flex justify-between items-center my-[30px]">
+ <p class="text-[18px] font-medium">Новые статьи 🎉</p>
+ <a
+  href="/posts"
+  class="underline-offset-4 text-[18px] underline font-medium"
+  rel="prefetch">Все статьи 🔎</a
+ >
+</div>
+
+<div class="grid gap-[30px] grid-cols-1 md:grid-cols-2">
+ {
+  allPosts
+   .sort(
+    (a, b) =>
+     new Date(b.data.datePublished).valueOf() - new Date(a.data.datePublished).valueOf()
+   )
+   .slice(0, 4)
+   .map((item) => <Article data={item.data} slug={item.slug} />)
+ }
+</div>

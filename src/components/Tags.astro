@@ -1,0 +1,13 @@
+---
+import tags from "src/data/tags";
+import Tag from "./Tag.astro";
+---
+
+<aside
+ role="listbox"
+ aria-label="Категории"
+ title="Категории"
+ class="w-full flex max-w-fit grow gap-[20px] overflow-x-auto"
+>
+ {tags.map((tag) => <Tag name={tag} />)}
+</aside>

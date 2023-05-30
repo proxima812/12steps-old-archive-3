@@ -1,0 +1,48 @@
+---
+const { prevPost, nextPost, link } = Astro.props;
+---
+
+<hr class="bg-[#aaa] h-[1px]" />
+<div class="flex flex-wrap md:flex-nowrap gap-[30px] justify-between my-[15px]">
+ <div class="hover:bg-white rounded-[20px] p-[0px] md:py-[20px] md:px-[30px]">
+  {
+   prevPost.data && (
+    <>
+     <a href={`/${link}/${prevPost.slug}/`} class="flex flex-col gap-[5px]">
+      <span class="text-left">⏪ Предыдущий</span>
+      <span class="text-[18px] md:text-[22px] leading-[110%] font-bold">
+       {" "}
+       {prevPost.data.title}
+      </span>
+     </a>
+    </>
+   )
+  }
+ </div>
+ <div class="hover:bg-white rounded-[20px] p-[0px] md:py-[20px] md:px-[30px]">
+  {
+   nextPost.data && (
+    <>
+     <a
+      href={`/${link}/${nextPost.slug}/`}
+      class="flex flex-col gap-[5px] text-left lg:text-right"
+     >
+      <span class="text-left lg:text-right">⏩ Следущий</span>
+      <span class="text-[18px] md:text-[22px] leading-[110%] font-bold">
+       {nextPost.data.title}
+      </span>
+     </a>
+    </>
+   )
+  }
+ </div>
+</div>
+
+<style>
+span {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+ }
+</style>

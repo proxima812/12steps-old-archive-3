@@ -1,0 +1,61 @@
+---
+import Article from "@components/Blog/Article.astro";
+import Pagination from "@components/Blog/Pagination.astro";
+import Layout from "@layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import { VK } from "src/consts";
+import tags from "src/data/tags";
+
+export async function getStaticPaths({ paginate }: any) {
+ const allPosts = await getCollection("Blog").then((res) =>
+  res.filter((x) => x.data.draft !== false)
+ );
+ return tags.map((category) => {
+  const filteredPosts = allPosts.filter((post) => post.data.category === category);
+  return paginate(filteredPosts, {
+   params: { category },
+   pageSize: 6,
+  });
+ });
+}
+
+const { category } = Astro.params;
+const { page, title } = Astro.props;
+---
+
+<Layout title={category} desc={"📗Все статьи по тегу" + " • " + category}>
+ <h1 class="pb-[30px] inline-block text-[30px] font-bold">
+  📁 {category}
+ </h1>
+ {
+  !page.data.length ? (
+   <>
+    <p class="text-[18px] md:text-[24px]">
+     В данном моменте постов не найдено, но скоро они появиться 🚀
+    </p>
+    <span class="mt-[8px] inline-block">
+     Следите за нами{" "}
+     <a
+      href={VK}
+      rel="noopener noreferrer"
+      target="_blank"
+      class="text-blue-500 underline"
+     >
+      ВКонтакте
+     </a>
+    </span>
+   </>
+  ) : (
+   <div class="grid gap-[30px] grid-cols-1 md:grid-cols-2">
+    {page.data
+     .sort(
+      (a, b) => new Date(b.data.pubDate).valueOf() - new Date(a.data.pubDate).valueOf()
+     )
+     .map((post) => (
+      <Article data={post.data} slug={post.slug} />
+     ))}
+   </div>
+  )
+ }
+ <Pagination prevUrl={page.url.prev} nextUrl={page.url.next} />
+</Layout>

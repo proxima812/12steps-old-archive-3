@@ -1,0 +1,42 @@
+---
+import BaseHead from "@components/main-components/BaseHead.astro";
+import Footer from "@components/main-components/Footer.astro";
+import Header from "@components/main-components/Header.astro";
+import MyAnalytics from "@components/main-components/MyAnalytics.astro";
+import "@styles/global.css";
+
+const {
+ title,
+ desc,
+ poster,
+ typeSite,
+ sectionSite,
+ dateModified,
+ datePublished,
+ author,
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="ru">
+ <head>
+  <BaseHead
+   title={title}
+   desc={desc}
+   poster={poster}
+   author={author}
+   typeSite={typeSite}
+   sectionSite={sectionSite}
+   datePublished={datePublished}
+   dateModified={dateModified}
+  />
+ </head>
+ <body>
+  <div class="main-container">
+   <Header />
+   <slot />
+  </div>
+  <Footer />
+  <MyAnalytics />
+ </body>
+</html>

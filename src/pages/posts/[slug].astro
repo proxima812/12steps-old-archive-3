@@ -1,0 +1,97 @@
+---
+import CustomImage from "@components/Blog/CustomImage.astro";
+import Share from "@components/Blog/Share.astro";
+import Breadcrumbs from "@components/main-components/Breadcrumbs.astro";
+import RemainingReadTime from "@components/main-components/RemainingReadTime.astro";
+// import Date from "@components/Date/Date.astro";
+import { machineDate, readableDate } from "@js/libs/dates";
+import Layout from "@layouts/Layout.astro";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+ const allPosts = await getCollection("Blog").then((res) =>
+  res.filter((x) => x.data.draft !== false)
+ );
+
+ return allPosts.map((post) => ({
+  params: { slug: post.slug },
+  props: {
+   post,
+  },
+ }));
+}
+
+export const prerender = true;
+
+const { post } = Astro.props;
+
+const { title, desc, datePublished, dateModified, poster, author } = post.data;
+
+const { Content } = await post.render();
+---
+
+<Layout
+ title={title}
+ desc={desc}
+ poster={poster}
+ author={author}
+ sectionSite="Статья"
+ typeSite="article"
+ datePublished={machineDate(datePublished)}
+ dateModified={dateModified && machineDate(dateModified)}
+>
+ <Breadcrumbs current={{ title: title, href: Astro.url.pathname }} class="mb-[30px]" />
+ <RemainingReadTime />
+ <CustomImage src={poster} title="Изображение" alt="Изображение к статье" loading />
+ <h1 class="text-[30px] md:text-[36px] font-bold inline-block my-[30px] leading-[110%]">
+  {title}
+ </h1>
+ <div class="flex">
+  {
+   (!!datePublished || !!dateModified) && (
+    <div class="text-[12px] mb-[30px] py-2 px-3 rounded-[10px] bg-white">
+     Дата:{" "}
+     <b class="tracking-wider">
+      <time
+       datetime={machineDate(datePublished)}
+       set:text={readableDate(datePublished)}
+      />
+     </b>
+     {!!dateModified && (
+      <>
+       &#8212; Обновлено
+       <b class="tracking-wider">
+        <time
+         datetime={machineDate(dateModified)}
+         set:text={readableDate(dateModified)}
+        />
+       </b>
+      </>
+     )}
+    </div>
+   )
+  }
+ </div>
+
+ <hr class="bg-[#aaa] h-[1px] mb-[20px]" />
+
+ <!-- <main
+  class="prose max-w-none prose-slate sm:prose-sm md:prose-base lg:prose-lg prose-a:text-indigo-600 prose-a:underline-offset-4 prose-li:mb-[12px] prose-a:my-[0px]"
+ > -->
+ <main
+  class="prose prose-zinc prose-a:text-indigo-600 prose-a:underline-offset-4 max-w-none leading-relaxed"
+ >
+  <p class="py-2 px-3 bg-white rounded-lg">
+   {desc}
+  </p>
+  <article class="mt-[-2em] article overflow-x-hidden">
+   <Content />
+  </article>
+ </main>
+ <hr class="bg-[#aaa] h-[1px] my-[20px]" />
+
+ <div class="flex flex-wrap items-center gap-5">
+  <p class="underline underline-offset-4">Поделиться в социальных сетях:</p>
+  <Share title={title} />
+ </div>
+</Layout>

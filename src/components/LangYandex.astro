@@ -1,0 +1,51 @@
+---
+const langs = [
+ {
+  lang: "ru",
+  src: "/langs-icons/lang-ru.svg",
+ },
+ {
+  lang: "en",
+  src: "/langs-icons/lang-en.svg",
+ },
+ {
+  lang: "tt",
+  src: "/langs-icons/lang-tt.svg",
+ },
+ {
+  lang: "uk",
+  src: "/langs-icons/lang-uk.svg",
+ },
+ {
+  lang: "kk",
+  src: "/langs-icons/lang-kk.svg",
+ },
+];
+---
+
+<div class="flex items-center">
+ <div id="ytWidget" style="display: none;"></div>
+ <div class="flex items-center bg-[#ebebeb] rounded-[5px] p-[5px]">
+  <div data-lang-active>
+   <img src="/langs-icons/lang-ru.svg" alt="ru" />
+  </div>
+  <div data-lang-list class="flex gap-[10px]">
+   {
+    langs.map((item) => (
+     <a data-ya-lang={item.lang} href="#">
+      <img
+       src={item.src}
+       width="30"
+       height="30"
+       loading="lazy"
+       decoding="async"
+       alt={item.lang}
+      />
+     </a>
+    ))
+   }
+  </div>
+ </div>
+</div>
+
+<script src="../js/utils/yandex-translate.js"></script>

@@ -1,0 +1,77 @@
+---
+import { getCollection } from "astro:content";
+import { VK } from "src/consts";
+const allPosts = await getCollection("Blog").then((res) =>
+	res.filter((x) => x.data.draft !== false),
+);
+---
+
+<footer class="footer rounded-t-[20px] bg-white pb-[30px] mt-[60px]">
+ <div class="main-container py-[30px]">
+  <div class="grid gap-[30px] grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+   <div class="flex flex-col gap-[15px]">
+    <span class="font-bold">📄 Страницы</span>
+    <a href="/">Главная</a>
+    <a href="/posts">Все статьи</a>
+    <a href="/about">О проекте</a>
+    <a href="/feedback">Обратная связь</a>
+   </div>
+   <div class="flex flex-col gap-[15px]">
+    <span class="font-bold">📁 Доп. ссылки</span>
+    <a href={VK} class="flex gap-[5px]" rel="noopener noreferrer">
+     <svg
+      width="22"
+      height="22"
+      viewBox="0 0 22 22"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+     >
+      <rect x="1.375" y="2.06238" width="18.5619" height="18.5619" fill="white"></rect>
+      <path
+       d="M14.3766 0H7.62345C1.46089 0 0 1.46089 0 7.62345V14.3766C0 20.5391 1.46089 22 7.62345 22H14.3766C20.5391 22 22 20.5391 22 14.3766V7.62345C22 1.46089 20.5247 0 14.3766 0ZM17.7603 15.6938H16.1633C15.5583 15.6938 15.372 15.2139 14.2837 14.1112C13.3385 13.1948 12.9198 13.0731 12.6867 13.0731C12.3574 13.0731 12.2639 13.1659 12.2639 13.6176V15.0606C12.2639 15.4476 12.1422 15.68 11.1179 15.68C9.42396 15.68 7.54439 14.6557 6.22649 12.7472C4.23899 9.95056 3.6952 7.85582 3.6952 7.42271C3.6952 7.18965 3.78801 6.97172 4.23556 6.97172H5.83601C6.24093 6.97172 6.39493 7.15803 6.55236 7.59114C7.34365 9.87563 8.66154 11.8769 9.20534 11.8769C9.40608 11.8769 9.49889 11.7841 9.49889 11.2719V8.91247C9.43771 7.82419 8.86504 7.7307 8.86504 7.34433C8.86504 7.15803 9.01903 6.97172 9.26584 6.97172H11.7827C12.123 6.97172 12.2481 7.15803 12.2481 7.55883V10.7419C12.2481 11.0856 12.4021 11.2073 12.4949 11.2073C12.6957 11.2073 12.8675 11.0856 13.2395 10.713C14.3889 9.42396 15.2125 7.43646 15.2125 7.43646C15.3198 7.2034 15.5061 6.98547 15.911 6.98547H17.5115C17.9913 6.98547 18.0986 7.23227 17.9913 7.57601C17.7906 8.50686 15.8319 11.2712 15.8319 11.2712C15.6635 11.5503 15.5989 11.672 15.8319 11.9834C16.0038 12.2165 16.5627 12.6998 16.9347 13.1329C17.6187 13.9098 18.1446 14.5615 18.2849 15.0125C18.4423 15.46 18.2099 15.6931 17.7583 15.6931L17.7603 15.6938Z"
+       fill="#0077FF"></path>
+     </svg>
+     <span>Мы ВКонтакте</span>
+    </a>
+    <!-- <a href="https://12step.netlify.app/" target="_blank" rel="noopener noreferrer"
+     >Материалы 12 шагов</a
+    >
+    <a href="https://t.me/all_12steps" target="_blank" rel="noopener noreferrer"
+     >12 шагов - база знаний</a
+    > -->
+   </div>
+   <div class="flex flex-col gap-[15px]">
+    <span class="font-bold">📚 Последние статьи</span>
+    {
+     allPosts
+      .sort(
+       (a, b) => new Date(b.data.datePublished).valueOf() - new Date(a.data.datePublished).valueOf()
+      )
+      .slice(0, 5)
+      .map((item) => <a href={"/posts/" + item.slug}>{item.data.title}</a>)
+    }
+   </div>
+  </div>
+ </div>
+ <div class="main-container">
+  <div class="border-t-[1px] border-[#ddd]">
+   <div class="pt-[30px] flex flex-col md:flex-row gap-[20px] justify-between">
+    <span><b id="year"></b></span>
+    <a
+     href="https://forms.gle/kvMRakiZHjgTpG8LA"
+     class="underline text-blue-500"
+     rel="noopener noreferrer">Предложить идею для сайта 💡</a
+    >
+    <!-- <div class="flex items-center">
+     <a href="mailto:sam.gold.8@ya.ru?subject" class="underline text-blue-500"
+      >Написать нам</a
+     >
+    </div> -->
+   </div>
+  </div>
+ </div>
+</footer>
+
+<script is:inline>
+ document.getElementById("year").innerHTML = new Date().getFullYear();
+</script>

@@ -1,0 +1,28 @@
+---
+import { Picture } from "@astrojs/image/components";
+
+type Props = {
+ src: string;
+ title: string;
+ alt: string;
+ loading?: boolean;
+};
+
+const { src, title, alt, loading } = Astro.props;
+const loadingAttribute = loading ? "eager" : "lazy";
+---
+
+<div class="aspect-video rounded-lg relative block overflow-hidden">
+ <Picture
+  background="white"
+  class="w-full h-auto cover"
+  src={src}
+  title={title}
+  widths={[200, 400, 600, 720, 1024]}
+  sizes="(max-width: 1024px) 100vw, 1024px"
+  aspectRatio="16:9"
+  format="webp"
+  alt={alt}
+  loading={loadingAttribute}
+ />
+</div>

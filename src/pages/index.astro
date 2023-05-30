@@ -1,0 +1,16 @@
+---
+import CTA from "@components/CTA.astro";
+import LatestPosts from "@components/LatestPosts.astro";
+import Layout from "@layouts/Layout.astro";
+import { SITE } from "src/consts";
+
+const site = SITE;
+---
+
+<Layout
+ title={"Новые статьи" + " 🏔 " + site}
+ desc="Воспеваем надежду на более справедливый, гармоничный и улучшенный мир."
+>
+ <CTA />
+ <LatestPosts />
+</Layout>
